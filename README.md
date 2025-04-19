@@ -23,7 +23,7 @@ superdeportivos/
 from flask import Flask, render_template, request, jsonify
 import sqlite3
 
-app = Flask(__name__)
+api = Flask(__name__)
 
 # Crear la base de datos
 def init_db():
