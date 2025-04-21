@@ -22,7 +22,7 @@ def inicio():
 
 @app.route('/mostrar_todo', methods=['GET'])
 def mostrar_todo():
-    conn = sqlite3.connect('Database.db')
+    conn = sqlite3.connect('Superdeportivos.db')
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM superdeportivos')
     coches = cursor.fetchall()
@@ -32,7 +32,7 @@ def mostrar_todo():
 @app.route('/mostrar', methods=['GET'])
 def mostrar_con_argumentos():
     marca = request.args.get('marca')
-    conn = sqlite3.connect('Database.db')
+    conn = sqlite3.connect('Superdeportivos.db')
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM superdeportivos WHERE marca=?', (marca,))
     coches = cursor.fetchall()
@@ -42,7 +42,7 @@ def mostrar_con_argumentos():
 @app.route('/insertar', methods=['POST'])
 def insertar():
     datos = request.json
-    conn = sqlite3.connect('Database.db')
+    conn = sqlite3.connect('Superdeportivos.db')
     cursor = conn.cursor()
     cursor.execute('INSERT INTO superdeportivos (marca, modelo, velocidad_maxima, precio) VALUES (?, ?, ?, ?)',
                    (datos['marca'], datos['modelo'], datos['velocidad_maxima'], datos['precio']))
@@ -53,7 +53,7 @@ def insertar():
 @app.route('/eliminar', methods=['DELETE'])
 def eliminar():
     coche_id = request.args.get('id')
-    conn = sqlite3.connect('Database.db')
+    conn = sqlite3.connect('Superdeportivos.db')
     cursor = conn.cursor()
     cursor.execute('DELETE FROM superdeportivos WHERE id=?', (coche_id,))
     conn.commit()
