@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 # Crear la base de datos
 def init_db():
-    conn = sqlite3.connect('Database.db')
+    conn = sqlite3.connect('Superdeportivos.db')
     cursor = conn.cursor()
     cursor.execute('''CREATE TABLE IF NOT EXISTS superdeportivos (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
