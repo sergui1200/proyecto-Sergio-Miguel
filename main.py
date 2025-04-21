@@ -1,15 +1,12 @@
 # IMPORTAR LIBRERÍAS
 import sqlite3
-from flask import Flask, app, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request
 from flask_cors import CORS
-from JGVutils import SQLiteConnection
-
 
 # CONFIGURAR APLICACIÓN
-application = Flask(__name__)
-cors = CORS(application)
-application.config["CORS_HEADERS"] = "Content-Type"
-Flask(__name__)
+app = Flask(__name__)
+cors = CORS(app)
+app.config["CORS_HEADERS"] = "Content-Type"
 
 # Crear la base de datos
 def init_db():
@@ -24,10 +21,11 @@ def init_db():
     conn.commit()
     conn.close()
 
-# CONFIGURAR PÁGINA
-@application.route("/inicio")
-def inicio():
-    return "Hola estas en la pagina de inicio"
+# CONFIGURAR PÁGINAS
+@app.route("/inicio")
+def pagina_inicio():
+    return "Hola, estás en la página de inicio"
+
 @app.route('/')
 def inicio():
     return render_template('inicio.html')
