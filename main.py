@@ -1,5 +1,6 @@
 # IMPORTAR LIBRERÍAS
-from flask import Flask, request
+import sqlite3
+from flask import Flask, jsonify, render_template, request
 from flask_cors import CORS
 from JGVutils import SQLiteConnection
 
