@@ -1,6 +1,6 @@
 # IMPORTAR LIBRERÍAS
 import sqlite3
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, app, jsonify, render_template, request
 from flask_cors import CORS
 from JGVutils import SQLiteConnection
 
@@ -9,7 +9,7 @@ from JGVutils import SQLiteConnection
 application = Flask(__name__)
 cors = CORS(application)
 application.config["CORS_HEADERS"] = "Content-Type"
-= Flask(__name__)
+Flask(__name__)
 
 # Crear la base de datos
 def init_db():
