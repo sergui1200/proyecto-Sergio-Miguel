@@ -3,68 +3,50 @@ from flask import Flask, request
 from flask_cors import CORS
 from JGVutils import SQLiteConnection
 
+# configuracion del proyecto
+application = Flask(__name__)
+cors = CORS(application)
+application.config["CORS_HEADERS"] = "Content-Type"
 
-# CREAR BD
-def init_db():
-    conn = sqlite3.connect('Sergio_alumnos.db')
-    cursor = conn.cursor()
-    cursor.execute('''CREATE TABLE dam1(
-id INT PRIMARY KEY,
-nombre VARCHAR(10),
-apellidos TEXT,
-asignaturas TEXT,
-media INT,
-aprobado BOOLEAN
-);
-''')
-    conn.commit()
-    conn.close()
-
-@app.route('/')
+# PAGINAS
+@application.route("/inicio",methods =["HTML"])
 def inicio():
-    return render_template('inicio.html')
+    return "hola bienvenido a nuestro proyecto"
 
-@app.route('/mostrar_todo', methods=['GET'])
-def mostrar_todo():
-    conn = sqlite3.connect('Sergio_alumnos.db')
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM dam1')
-    dam1 = cursor.fetchall()
-    conn.close()
-    return jsonify(dam1)
+@application.route("/nombres")
+def nombres():
+    nombres = "Sergio, Miguel"
+    return nombres
 
-@app.route('/mostrar', methods=['GET'])
-def mostrar_con_argumentos():
-    id = request.args.get('id')
-    conn = sqlite3.connect('Sergio_alumnos.db')
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM dam1 WHERE id=?', (id,))
-    dam1 = cursor.fetchall()
-    conn.close()
-    return jsonify(dam1)
+@application.route("/apellidos")
+def apellidos():
+    apellidos = "Buendia Colao, Platon Cano"
+    return apellidos
 
-@app.route('/insertar', methods=['POST'])
-def insertar():
-    datos = request.json
-    conn = sqlite3.connect('Database.db')
-    cursor = conn.cursor()
-    cursor.execute('INSERT INTO dam1 VALUES (1,'Sergio','Buendia Colao','PRO ED INGLES',5,TRUE),(2,'Miguel','Platon cano','PRO ED INGLES',4,FALSE),(3,'Pablo','Paraiso','PRO BD XML FOL ED INGLES',7,TRUE),(4,'Jorge','CASAS','PRO BD XML FOL ED INGLES',9,TRUE);',
-                   (datos['id'], datos['nombre'], datos['apellidos'], datos['asignaturas'], datos['media'], datos['aprobado']))
-    conn.commit()
-    conn.close()
-    return jsonify({'mensaje': 'Coche insertado correctamente'})
+@application.route("/id")
+def id():
+    ids = "1,2"
+    return ids
+@application.route("/final")
+def final():
+    return "este es el final del proyecto"
+# MOSTRAR 
+@application.route("/mostrar", methods = ["GET"])
+def mostrar():
+    conexion = SQLiteConnection("Sergio_alumnos.db")
+    datos = conexion.execute_query("SELECT * FROM dam1")
+    return datos
+# METODO DELETE
+@application.route("/borrar", methods = ["DELETE"])
+def borrar():
+    conexion = SQLiteConnection("Sergio_alumnos.db")
+    datos = conexion.execute_query("DELETE FROM dam1 WHERE nota= 'media';")
+    return datos
+# METODO INSERT
+@application.route("/Insertar", methods = ["POST"])
+def Insertar():
+    conexion = SQLiteConnection("Sergio_alumnos.db")
+    datos = conexion.execute_query("INSERT INTO dam1 VALUES (1,'Sergio','Buendia Colao','PRO ED INGLES',5,TRUE),(2,'Miguel','Platon cano','PRO ED INGLES',4,FALSE),(3,'Pablo','Paraiso','PRO BD XML FOL ED INGLES',7,TRUE),(4,'Jorge','CASAS','PRO BD XML FOL ED INGLES',9,TRUE);")
+    return datos
 
-@app.route('/eliminar', methods=['DELETE'])
-def eliminar():
-    id = request.args.get('id')
-    conn = sqlite3.connect('Sergio_alumnos.db')
-    cursor = conn.cursor()
-    cursor.execute('DELETE FROM dam1 WHERE id=?', (id,))
-    conn.commit()
-    conn.close()
-    return jsonify({'mensaje': 'Coche eliminado correctamente'})
-
-if __name__ == '__main__':
-    init_db()
-    app.run(debug=True)
 
